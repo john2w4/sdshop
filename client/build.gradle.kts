@@ -1,4 +1,5 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
@@ -12,6 +13,13 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+
+    targets.withType<KotlinNativeTarget> {
+        binaries.framework {
+            baseName = "SdShopClient"
+            isStatic = true
+        }
+    }
 
     sourceSets {
         val coroutinesVersion = "1.8.1"
