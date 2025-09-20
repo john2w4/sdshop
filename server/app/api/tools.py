@@ -1,24 +1,28 @@
-"""工具看板 API 占位。"""
+"""Tool board endpoints."""
 
-from fastapi import APIRouter
+from typing import List
+
+from fastapi import APIRouter, Depends
+
+from ..schemas import ToolDefinition, ToolInvocationRequest, ToolInvocationResponse
+from ..services import ToolService, get_tool_service
 
 router = APIRouter()
 
 
-@router.get("")
-async def list_tools() -> dict:
+@router.get("", response_model=List[ToolDefinition])
+async def list_tools(service: ToolService = Depends(get_tool_service)) -> List[ToolDefinition]:
     """返回预设工具列表。"""
 
-    return {
-        "tools": [
-            {"id": "compare_specs", "title": "参数对比", "description": "多商品参数对比"},
-            {"id": "budget_optimizer", "title": "预算搭配", "description": "在预算内组合方案"},
-        ]
-    }
+    return await service.list_tools()
 
 
-@router.post("/{tool_id}/invoke")
-async def invoke_tool(tool_id: str) -> dict:
-    """占位：调用具体工具时由 LLM 网关处理。"""
+@router.post("/{tool_id}/invoke", response_model=ToolInvocationResponse)
+async def invoke_tool(
+    tool_id: str,
+    payload: ToolInvocationRequest,
+    service: ToolService = Depends(get_tool_service),
+) -> ToolInvocationResponse:
+    """调用工具并记录返回内容。"""
 
-    return {"tool_id": tool_id, "status": "accepted"}
+    return await service.invoke_tool(tool_id, payload)
