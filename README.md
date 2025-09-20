@@ -21,6 +21,7 @@
 ```
 
 客户端实现将基于 `docs/architecture.md` 描述的业务容器、状态管理与导航方案。
+`client/` 目录提供 Kotlin Multiplatform + Compose 的跨端实现，包含业务容器、状态管理、主题/商品/询问/工具/单品等 Tab 视图以及事件网关、LLM 调用的抽象封装。
 
 ## 开发环境
 
